@@ -1,0 +1,42 @@
+{
+  "languages": {
+    "english": "English",
+    "french": "Français",
+    "arabic": "العربية"
+  },
+  "common": {
+    "dashboard": "Tableau de bord",
+    "realTimeData": "Données en temps réel",
+    "cropManagement": "Gestion des cultures",
+    "recommendations": "Recommandations",
+    "optimization": "Optimisation",
+    "directives": "Directives",
+    "alerts": "Alertes",
+    "settings": "Paramètres",
+    "loading": "Chargement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "edit": "Modifier",
+    "delete": "Supprimer"
+  },
+  "directives": {
+    "title": "Directives et Règlements Agricoles",
+    "search": "Rechercher des directives...",
+    "reset": "Réinitialiser",
+    "export": "Exporter",
+    "readMore": "Lire plus",
+    "noResults": "Aucune directive trouvée pour votre recherche.",
+    "lastUpdated": "Mis à jour le",
+    "categories": {
+      "all": "Toutes les catégories",
+      "water": "Conservation de l'eau",
+      "sustainable": "Pratiques agricoles durables",
+      "rotation": "Rotation des cultures"
+    },
+    "organizations": {
+      "ministry": "Ministère de l'Agriculture du Maroc",
+      "research": "Institut National de la Recherche Agronomique",
+      "safety": "Office National de Sécurité Sanitaire des Produits Alimentaires"
+    }
+  }
+}

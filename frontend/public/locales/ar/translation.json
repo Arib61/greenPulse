@@ -1,0 +1,37 @@
+{
+  "common": {
+    "dashboard": "لوحة التحكم",
+    "realTimeData": "البيانات في الوقت الفعلي",
+    "cropManagement": "إدارة المحاصيل",
+    "recommendations": "التوصيات",
+    "optimization": "التحسين",
+    "alerts": "التنبيهات",
+    "settings": "الإعدادات"
+  },
+  "dashboard": {
+    "weatherForecast": "توقعات الطقس",
+    "cropStatus": "حالة المحاصيل",
+    "alerts": "التنبيهات",
+    "taskList": "قائمة المهام",
+    "farmMap": "خريطة المزرعة",
+    "financialSummary": "الملخص المالي"
+  },
+  "weather": {
+    "temperature": "درجة الحرارة",
+    "humidity": "الرطوبة",
+    "rainfall": "هطول الأمطار",
+    "sunny": "مشمس",
+    "cloudy": "غائم",
+    "rainy": "ممطر"
+  },
+  "crops": {
+    "wheat": "قمح",
+    "corn": "ذرة",
+    "soybeans": "فول الصويا",
+    "status": {
+      "healthy": "صحي",
+      "needsWater": "يحتاج إلى ماء",
+      "pestDetected": "تم اكتشاف آفات"
+    }
+  }
+}
