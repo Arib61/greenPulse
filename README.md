@@ -1,4 +1,4 @@
-# **Documentation du Projet - Optimisation Agricole avec Recommandations IA**
+# **EcoCrops- Optimisation Agricole avec Recommandations IA**
 
 Ce projet est une application interactive conçue pour aider les utilisateurs, notamment les agriculteurs et les gestionnaires agricoles, à optimiser l'utilisation des ressources de leurs parcelles agricoles. Grâce à une interface intuitive et des recommandations basées sur l'IA, l'application fournit des informations essentielles pour améliorer la gestion des sols, des cultures et des ressources.
 
