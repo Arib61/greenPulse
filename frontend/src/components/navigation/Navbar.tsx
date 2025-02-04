@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { Menu } from 'lucide-react';
 import { 
   LayoutDashboard, 
   Activity,
@@ -14,42 +14,94 @@ import {
 } from 'lucide-react';
 
 const navItems = [
-  { icon: Home, key: 'dashboard', path: '/dashboard' },
-  { icon: Activity, key: 'realTimeData', path: '/real-time-data' },
-  { icon: Leaf, key: 'cropManagement', path: '/crop-management' },
-  { icon: Lightbulb, key: 'recommendations', path: '/recommendations' },
-  { icon: Calculator, key: 'optimization', path: '/optimization' },
-  { icon: BookOpen, key: 'directives', path: '/directives' },
-  { icon: Bell, key: 'alerts', path: '/alerts' },
-  { icon: Settings, key: 'settings', path: '/settings' },
+  { icon: Home, key: 'dashboard', path: '/dashboard', label: 'Dashboard' },
+  { icon: Activity, key: 'realTimeData', path: '/real-time-data', label: 'Real-Time Data' },
+  { icon: Leaf, key: 'cropManagement', path: '/crop-management', label: 'Crop Management' },
+  { icon: Lightbulb, key: 'recommendations', path: '/recommendations', label: 'Recommendations' },
+  { icon: Calculator, key: 'optimization', path: '/optimization', label: 'Optimization' },
+  { icon: BookOpen, key: 'directives', path: '/directives', label: 'Directives' },
+  { icon: Bell, key: 'alerts', path: '/alerts', label: 'Alerts' },
+  { icon: Settings, key: 'settings', path: '/settings', label: 'Settings' },
 ];
 
 export function Navbar() {
   const location = useLocation();
-  const { t } = useTranslation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed left-0 top-0 h-full w-64 bg-green-800 text-white">
-      <div className="p-4 border-b border-green-700">
-        <h1 className="text-xl font-bold">{t('common.dashboard')}</h1>
-      </div>
-      <ul className="p-2">
-        {navItems.map((item) => (
-          <li key={item.key}>
-            <Link
-              to={item.path}
-              className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                location.pathname === item.path
-                  ? 'bg-green-700'
-                  : 'hover:bg-green-700'
-              }`}
-            >
-              <item.icon className="w-5 h-5" />
-              <span>{t(`common.${item.key}`)}</span>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </nav>
+    <>
+      {/* Mobile Menu Button */}
+      <button
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-green-800 text-white hover:bg-green-700 transition-colors"
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+      >
+        <Menu className="w-6 h-6" />
+      </button>
+
+      {/* Backdrop */}
+      {isMobileMenuOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black/50 z-40"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Navigation */}
+      <nav
+        className={`fixed left-0 top-0 h-full w-64 z-40 transition-all duration-300 ease-in-out
+          ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+          bg-gradient-to-b from-green-800 to-green-900
+          backdrop-blur-lg backdrop-saturate-150 bg-opacity-95
+          border-r border-white/10
+          shadow-xl`}
+      >
+        {/* Logo Section */}
+        <div className="p-4 border-b border-white/10">
+        <div className="flex items-center gap-2">
+          {/* Logo */}
+          <img
+            src="../images/Logo.png" // Replace with your logo path
+            alt="Ecocrops Logo"
+            className="w-12 h-12" // Adjust size as needed
+          />
+          {/* Titre */}
+          <h1 className="text-xl font-bold text-white">
+            Ecocrops
+          </h1>
+          </div>
+        </div>
+
+        {/* Navigation Items */}
+        <ul className="p-2 space-y-2">
+          {navItems.map((item) => {
+            const isActive = location.pathname === item.path;
+            return (
+              <li key={item.key}>
+                <Link
+                  to={item.path}
+                  className={`group relative flex items-center space-x-3 px-4 py-3 rounded-lg
+                    transition-all duration-300 ease-in-out
+                    ${isActive 
+                      ? 'bg-white/20 text-white' 
+                      : 'text-white/80 hover:bg-white/10 hover:text-white'}`}
+                >
+                  {/* Active Indicator */}
+                  {isActive && (
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white rounded-r-full" />
+                  )}
+                  
+                  {/* Icon with hover effect */}
+                  <item.icon className={`w-6 h-6 transition-transform duration-300
+                    ${isActive ? 'scale-110' : 'group-hover:scale-110'}`} />
+                  
+                  {/* Label */}
+                  <span>{item.label}</span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+    </>
   );
 }
