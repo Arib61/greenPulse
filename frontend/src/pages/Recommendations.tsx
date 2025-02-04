@@ -1,97 +1,120 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DashboardLayout } from '../layouts/DashboardLayout';
-import { MapPin, Wheat } from 'lucide-react';
-
-interface SoilData {
-  nitrogen: number;
-  phosphorus: number;
-  potassium: number;
-  temperature: number;
-  humidity: number;
-  ph: number;
-  rainfall: number;
-}
+import { Wheat } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { SoilData } from '../types/agriculture';
+import { soils } from '../data/soils';
+import { SoilSelector } from '../components/soil/SoilSelector';
+import { SoilDataCard } from '../components/soil/SoilDataCard';
+import { RecommendationCard } from '../components/recommendations/RecommendationCard';
+import { ConfidenceScore } from '../components/recommendations/ConfidenceScore';
 
 export function Recommendations() {
-  const [soilData, setSoilData] = useState<SoilData>({
-    nitrogen: -3,
-    phosphorus: 11,
-    potassium: 13,
-    temperature: 11,
-    humidity: 14,
-    ph: 15,
-    rainfall: 11,
-  });
+  const [selectedSoilId, setSelectedSoilId] = useState<string>('');
+  const [selectedSoil, setSelectedSoil] = useState<SoilData | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleInputChange = (field: keyof SoilData, value: number) => {
-    setSoilData(prev => ({ ...prev, [field]: value }));
-  };
+  useEffect(() => {
+    if (selectedSoilId) {
+      setIsLoading(true);
+      // Simulate loading data
+      setTimeout(() => {
+        setSelectedSoil(soils.find(soil => soil.id === selectedSoilId) || null);
+        setIsLoading(false);
+      }, 500);
+    } else {
+      setSelectedSoil(null);
+    }
+  }, [selectedSoilId]);
 
   return (
     <DashboardLayout>
-      <h1 className="text-2xl font-bold mb-6">Crop Recommendations</h1>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Input Form */}
-        <div className="bg-white p-6 rounded-lg shadow-sm">
-          <h2 className="text-xl font-semibold mb-4">Enter Soil and Climate Data</h2>
-          
-          <button className="w-full flex items-center justify-center gap-2 bg-black text-white p-3 rounded-lg mb-6">
-            <MapPin className="w-5 h-5" />
-            Auto-Localize
-          </button>
+      <div className="space-y-6">
+        <h1 className="text-2xl font-bold">Recommandations IA</h1>
 
-          <div className="space-y-4">
-            {Object.entries(soilData).map(([key, value]) => (
-              <div key={key}>
-                <label className="block text-sm font-medium text-gray-700 capitalize mb-1">
-                  {key}
-                </label>
-                <input
-                  type="number"
-                  value={value}
-                  onChange={(e) => handleInputChange(key as keyof SoilData, Number(e.target.value))}
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-                />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Main Content */}
+          <div className="lg:col-span-2 space-y-6">
+            <SoilSelector
+              soils={soils}
+              selectedSoilId={selectedSoilId}
+              onSelect={setSelectedSoilId}
+            />
+
+            <AnimatePresence mode="wait">
+              {selectedSoil ? (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className="space-y-6"
+                >
+                  <SoilDataCard soil={selectedSoil} />
+
+                  {/* AI Recommendations */}
+                  <div className="bg-white p-6 rounded-lg shadow-sm">
+                    <h2 className="text-xl font-semibold mb-4">Recommandations</h2>
+                    <div className="space-y-4">
+                      <RecommendationCard
+                        recommendation={{
+                          id: '1',
+                          type: 'success',
+                          title: 'Culture recommandée : Blé',
+                          description: 'Les conditions actuelles sont optimales pour la culture du blé. La température et l\'humidité sont dans les plages idéales.'
+                        }}
+                      />
+                      {selectedSoil.data.nitrogen < selectedSoil.optimalRanges.nitrogen[0] && (
+                        <RecommendationCard
+                          recommendation={{
+                            id: '2',
+                            type: 'warning',
+                            title: 'Ajustement recommandé',
+                            description: 'Le niveau d\'azote est légèrement bas. Considérez l\'application d\'engrais azoté pour optimiser la croissance.'
+                          }}
+                        />
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="bg-white p-6 rounded-lg shadow-sm text-center"
+                >
+                  <Wheat className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                  <p className="text-gray-600">
+                    Veuillez sélectionner une parcelle pour obtenir des recommandations
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Sidebar */}
+          <div className="space-y-6">
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <h2 className="text-lg font-semibold mb-4">Informations</h2>
+              <div className="space-y-4 text-sm text-gray-600">
+                <p>
+                  Notre système d'IA analyse les données de votre sol pour fournir
+                  des recommandations personnalisées pour vos cultures.
+                </p>
+                <p>
+                  Les recommandations sont basées sur :
+                </p>
+                <ul className="list-disc pl-5 space-y-2">
+                  <li>La composition du sol</li>
+                  <li>Les conditions climatiques</li>
+                  <li>L'historique des cultures</li>
+                  <li>Les meilleures pratiques agricoles</li>
+                </ul>
               </div>
-            ))}
-          </div>
+            </div>
 
-          <button className="mt-6 w-full bg-black text-white p-3 rounded-lg">
-            Get AI Recommendation
-          </button>
-        </div>
-
-        {/* Results */}
-        <div className="bg-white p-6 rounded-lg shadow-sm">
-          <h2 className="text-xl font-semibold mb-4">AI Recommendation</h2>
-          
-          <div className="flex items-center gap-3 mb-4">
-            <Wheat className="w-8 h-8 text-green-600" />
-            <span className="text-2xl font-semibold">Wheat</span>
-          </div>
-
-          <p className="text-gray-600 mb-4">
-            Based on the provided parameters, wheat is the recommended crop for optimal yield. 
-            The soil composition and climate conditions are particularly favorable for wheat cultivation.
-          </p>
-
-          <div className="bg-green-50 p-4 rounded-lg mb-6">
-            <p className="text-green-700">AI Confidence: 85.00%</p>
-          </div>
-
-          <h3 className="font-semibold mb-3">Soil Nutrient Levels</h3>
-          <div className="grid grid-cols-2 gap-4 mb-6">
-            {Object.entries(soilData).map(([key, value]) => (
-              <div key={key} className="flex justify-between">
-                <span className="text-gray-600 capitalize">{key}</span>
-                <span className="font-medium">{value}</span>
-              </div>
-            ))}
-          </div>
-
-          <h3 className="font-semibold mb-3">Optimal Levels Chart</h3>
-          <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
-            Chart Visualization
+            <ConfidenceScore score={85} />
           </div>
         </div>
       </div>

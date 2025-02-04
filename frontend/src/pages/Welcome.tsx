@@ -5,6 +5,8 @@ import { useAuth } from '../contexts/AuthContext';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { RoleCard } from '../components/RoleCard';
+import { AboutSection } from '../components/welcome/AboutSection';
+import { FeatureDemo } from '../components/welcome/FeatureDemo';
 import { LogIn, UserPlus } from 'lucide-react';
 import { LoginModal } from '../components/auth/LoginModal';
 import { SignupModal } from '../components/auth/SignupModal';
@@ -26,7 +28,7 @@ export function Welcome() {
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      <main className="flex-1 pt-24">
+      <main className="flex-1">
         {/* Hero Section */}
         <div 
           className="relative h-[600px] bg-cover bg-center"
@@ -48,6 +50,12 @@ export function Welcome() {
           </div>
         </div>
 
+        {/* About Section */}
+        <AboutSection />
+
+        {/* Interactive Feature Demo */}
+        <FeatureDemo />
+
         {/* Role Selection */}
         <div className="max-w-7xl mx-auto px-6 py-16">
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
@@ -67,7 +75,7 @@ export function Welcome() {
           </div>
         </div>
 
-        {/* CTA Buttons */}
+        {/* CTA Section */}
         <div className="bg-gray-50 py-16">
           <div className="max-w-7xl mx-auto px-6">
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">

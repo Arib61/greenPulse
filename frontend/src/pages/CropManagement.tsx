@@ -1,111 +1,69 @@
-import React from 'react';
-import { DashboardLayout } from '../layouts/DashboardLayout';
-import { Leaf, Calendar, Clock } from 'lucide-react';
-
+import { useState } from "react"
+import { DashboardLayout } from "../layouts/DashboardLayout"
+import { Plus } from "lucide-react"
+import { SoilList } from "../components/crops/SoilList"
+import { CropList } from "../components/crops/CropList"
+import { Sidebar } from "../components/crops/SideBar"
+import { SoilFormModal } from "../components/crops/SoilFormModal"
+import { soils, crops } from "../data/crops"
 export function CropManagement() {
+  const [showSoilForm, setShowSoilForm] = useState(false)
+  const [selectedSoil, setSelectedSoil] = useState<string | null>(null)
+  const [selectedView, setSelectedView] = useState<"soil" | "crops">("soil")
+
   return (
     <DashboardLayout>
-      <h1 className="text-2xl font-bold mb-6">Crop Management</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Crop Status */}
-        <div className="bg-white p-6 rounded-lg shadow-sm">
-          <h2 className="text-xl font-semibold mb-4">Crop Status</h2>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <Leaf className="text-green-500" />
-                <span>Wheat</span>
-              </div>
-              <span className="text-green-500">Healthy</span>
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold">Gestion des Cultures</h1>
+          <div className="flex items-center space-x-4">
+            <div className="flex rounded-lg overflow-hidden border">
+              <button
+                onClick={() => setSelectedView("soil")}
+                className={`px-4 py-2 ${
+                  selectedView === "soil" ? "bg-green-600 text-white" : "bg-white text-gray-600 hover:bg-gray-50"
+                }`}
+              >
+                Sols
+              </button>
+              <button
+                onClick={() => setSelectedView("crops")}
+                className={`px-4 py-2 ${
+                  selectedView === "crops" ? "bg-green-600 text-white" : "bg-white text-gray-600 hover:bg-gray-50"
+                }`}
+              >
+                Cultures
+              </button>
             </div>
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <Leaf className="text-yellow-500" />
-                <span>Corn</span>
-              </div>
-              <span className="text-yellow-500">Needs Water</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <Leaf className="text-green-500" />
-                <span>Soybeans</span>
-              </div>
-              <span className="text-green-500">Healthy</span>
-            </div>
+            <button
+              onClick={() => setShowSoilForm(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
+            >
+              <Plus className="w-5 h-5" />
+              Ajouter {selectedView === "soil" ? "un sol" : "une culture"}
+            </button>
           </div>
         </div>
 
-        {/* Crop List */}
-        <div className="bg-white p-6 rounded-lg shadow-sm">
-          <h2 className="text-xl font-semibold mb-4">Crop List</h2>
-          <div className="space-y-4">
-            {[
-              { name: 'Wheat', status: 'Healthy', planted: '2023-03-15' },
-              { name: 'Corn', status: 'Needs Water', planted: '2023-04-01' },
-              { name: 'Soybeans', status: 'Healthy', planted: '2023-05-10' },
-              { name: 'Barley', status: 'Pest Detected', planted: '2023-03-20' },
-            ].map((crop) => (
-              <div key={crop.name} className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <Leaf className="text-green-600" />
-                  <span>{crop.name}</span>
-                </div>
-                <div className="text-sm text-gray-500">
-                  <div>Status: {crop.status}</div>
-                  <div>Planted: {crop.planted}</div>
-                </div>
-              </div>
-            ))}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Main Content */}
+          <div className="lg:col-span-2 space-y-6">
+            {selectedView === "soil" ? (
+              <SoilList soils={soils} selectedSoil={selectedSoil} onSelectSoil={setSelectedSoil} />
+            ) : (
+              <CropList crops={crops} soils={soils} />
+            )}
           </div>
-        </div>
 
-        {/* Crop Calendar */}
-        <div className="bg-white p-6 rounded-lg shadow-sm">
-          <h2 className="text-xl font-semibold mb-4">Crop Calendar</h2>
-          <div className="space-y-4">
-            <div className="grid grid-cols-7 gap-1 text-center text-sm">
-              <div>Su</div>
-              <div>Mo</div>
-              <div>Tu</div>
-              <div>We</div>
-              <div>Th</div>
-              <div>Fr</div>
-              <div>Sa</div>
-            </div>
-            {/* Calendar grid would go here */}
-            <div className="h-48 bg-gray-50 rounded flex items-center justify-center">
-              Calendar View
-            </div>
-          </div>
-        </div>
-
-        {/* Maintenance Schedule */}
-        <div className="bg-white p-6 rounded-lg shadow-sm">
-          <h2 className="text-xl font-semibold mb-4">Maintenance Schedule</h2>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Clock className="text-yellow-500" />
-                <span>Water Corn field</span>
-              </div>
-              <div className="text-sm text-gray-500">
-                <div>Date: 2023-06-15</div>
-                <div>Status: Pending</div>
-              </div>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Clock className="text-green-500" />
-                <span>Apply fertilizer to Wheat</span>
-              </div>
-              <div className="text-sm text-gray-500">
-                <div>Date: 2023-06-18</div>
-                <div>Status: Completed</div>
-              </div>
-            </div>
-          </div>
+          {/* Sidebar */}
+          <Sidebar />
         </div>
       </div>
+
+      {/* Soil Form Modal */}
+      <SoilFormModal show={showSoilForm} onClose={() => setShowSoilForm(false)} />
     </DashboardLayout>
-  );
+  )
 }
+

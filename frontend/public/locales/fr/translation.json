@@ -4,39 +4,59 @@
     "french": "Français",
     "arabic": "العربية"
   },
-  "common": {
-    "dashboard": "Tableau de bord",
-    "realTimeData": "Données en temps réel",
-    "cropManagement": "Gestion des cultures",
-    "recommendations": "Recommandations",
-    "optimization": "Optimisation",
-    "directives": "Directives",
-    "alerts": "Alertes",
-    "settings": "Paramètres",
-    "loading": "Chargement...",
-    "save": "Enregistrer",
-    "cancel": "Annuler",
-    "edit": "Modifier",
-    "delete": "Supprimer"
-  },
-  "directives": {
-    "title": "Directives et Règlements Agricoles",
-    "search": "Rechercher des directives...",
-    "reset": "Réinitialiser",
-    "export": "Exporter",
-    "readMore": "Lire plus",
-    "noResults": "Aucune directive trouvée pour votre recherche.",
-    "lastUpdated": "Mis à jour le",
-    "categories": {
-      "all": "Toutes les catégories",
-      "water": "Conservation de l'eau",
-      "sustainable": "Pratiques agricoles durables",
-      "rotation": "Rotation des cultures"
+  "welcome": {
+    "title": "Transformons l'Agriculture au Maroc",
+    "subtitle": "Bienvenue sur EcoCrop — Votre Partenaire pour une Agriculture Durable",
+    "description": "EcoCrop vous accompagne dans votre transition vers une agriculture plus durable. Que vous soyez Agriculteur ou Ingénieur Agronome, nos outils vous aident à optimiser vos cultures tout en préservant l'environnement.",
+    "about": {
+      "title": "À Propos d'EcoCrop",
+      "description": "EcoCrop est votre partenaire dans la transformation de l'agriculture marocaine vers des pratiques plus durables et productives.",
+      "features": {
+        "smart": {
+          "title": "Agriculture Intelligente",
+          "description": "Optimisez vos cultures grâce à des recommandations basées sur l'IA"
+        },
+        "water": {
+          "title": "Gestion de l'Eau",
+          "description": "Réduisez votre consommation d'eau tout en maximisant les rendements"
+        },
+        "optimization": {
+          "title": "Optimisation Continue",
+          "description": "Améliorez constamment vos pratiques grâce à des analyses en temps réel"
+        },
+        "community": {
+          "title": "Communauté Agricole",
+          "description": "Rejoignez une communauté d'agriculteurs engagés dans l'agriculture durable"
+        }
+      }
     },
-    "organizations": {
-      "ministry": "Ministère de l'Agriculture du Maroc",
-      "research": "Institut National de la Recherche Agronomique",
-      "safety": "Office National de Sécurité Sanitaire des Produits Alimentaires"
+    "demo": {
+      "title": "Découvrez Nos Solutions",
+      "features": {
+        "recommendations": {
+          "title": "Recommandations Personnalisées",
+          "description": "Obtenez des conseils sur mesure basés sur vos conditions spécifiques de culture"
+        },
+        "monitoring": {
+          "title": "Surveillance en Temps Réel",
+          "description": "Suivez l'état de vos cultures et les conditions environnementales 24/7"
+        }
+      }
+    },
+    "roles": {
+      "title": "Choisissez Votre Profil",
+      "farmer": {
+        "title": "Agriculteur",
+        "description": "Pour les agriculteurs qui cherchent à améliorer leurs pratiques durables"
+      },
+      "engineer": {
+        "title": "Ingénieur Agronome",
+        "description": "Pour les experts qui guident vers une agriculture durable"
+      }
+    },
+    "cta": {
+      "login": "Se Connecter",
+      "signup": "S'inscrire"
     }
   }
 }
