@@ -1,0 +1,97 @@
+{
+  "languages": {
+    "english": "English",
+    "french": "Français",
+    "arabic": "العربية"
+  },
+  "common": {
+    "dashboard": "Dashboard",
+    "realTimeData": "Real-Time Data",
+    "cropManagement": "Crop Management",
+    "recommendations": "Recommendations",
+    "optimization": "Optimization",
+    "alerts": "Alerts",
+    "settings": "Settings",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "welcome": {
+    "title": "Empowering Sustainable Agriculture in Morocco",
+    "subtitle": "Welcome to Morocco's EcoCrop — Promoting Sustainability and Conscious Crop Management",
+    "description": "EcoCrop is your partner in sustainable farming. Whether you're an Agriculteur or an Ingénieur Agronome, our tools help you track, plan, and improve your crop's sustainability.",
+    "cta": {
+      "login": "Log In",
+      "signup": "Sign Up"
+    },
+    "roles": {
+      "farmer": {
+        "title": "Agriculteur",
+        "description": "For farmers seeking to improve their sustainable practices"
+      },
+      "engineer": {
+        "title": "Ingénieur Agronome",
+        "description": "For experts guiding towards sustainable agriculture"
+      }
+    }
+  },
+  "dashboard": {
+    "weatherForecast": "Weather Forecast",
+    "cropStatus": "Crop Status",
+    "alerts": "Alerts",
+    "taskList": "Task List",
+    "farmMap": "Farm Map",
+    "financialSummary": "Financial Summary"
+  },
+  "weather": {
+    "temperature": "Temperature",
+    "humidity": "Humidity",
+    "rainfall": "Rainfall",
+    "sunny": "Sunny",
+    "cloudy": "Cloudy",
+    "rainy": "Rainy",
+    "forecast": {
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "weekly": "7-Day Forecast"
+    }
+  },
+  "crops": {
+    "wheat": "Wheat",
+    "corn": "Corn",
+    "soybeans": "Soybeans",
+    "status": {
+      "healthy": "Healthy",
+      "needsWater": "Needs Water",
+      "pestDetected": "Pest Detected"
+    },
+    "actions": {
+      "water": "Water Crop",
+      "fertilize": "Apply Fertilizer",
+      "harvest": "Harvest"
+    }
+  },
+  "calendar": {
+    "today": "Today",
+    "month": "Month",
+    "week": "Week",
+    "day": "Day",
+    "events": {
+      "watering": "Watering",
+      "fertilizing": "Fertilizing",
+      "harvesting": "Harvesting"
+    }
+  },
+  "map": {
+    "zoomIn": "Zoom In",
+    "zoomOut": "Zoom Out",
+    "selectLocation": "Select Location",
+    "markers": {
+      "field": "Field",
+      "sensor": "Sensor",
+      "irrigation": "Irrigation Point"
+    }
+  }
+}

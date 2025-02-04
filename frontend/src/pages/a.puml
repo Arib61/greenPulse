@@ -1,0 +1,19 @@
+@startuml
+title Architecture de la Base de Données Distribuée
+
+node "Base Centrale (CentOS - MySQL)" {
+    database MySQL_CENTOS as "MySQL (banque_distribuee)"
+}
+
+node "Agence 1 (Windows - Oracle)" {
+    database Oracle_WINDOWS as "Oracle (banque_pdb)"
+}
+
+node "Agence 2 (Ubuntu - MySQL)" {
+    database MySQL_UBUNTU as "MySQL (banque_ubuntu)"
+}
+
+MySQL_CENTOS <-down-> Oracle_WINDOWS : DBLINK (Oracle → MySQL)
+MySQL_CENTOS <-down-> MySQL_UBUNTU : Réplication MySQL
+
+@enduml
