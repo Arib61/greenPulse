@@ -53,7 +53,7 @@ export const WeatherSection: React.FC<WeatherSectionProps> = ({
           />
           <WeatherInfoCard
             icon={<MapPin className="w-8 h-8 text-green-500" />}
-            value="Fès-Meknès"
+            value="Tanger-Tétouan-Al Hoceima"
             label="Région"
             bgColor="bg-green-50"
           />

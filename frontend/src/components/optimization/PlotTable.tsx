@@ -19,7 +19,7 @@ export const PlotTable: React.FC<PlotTableProps> = ({ plots, optimizedPlots, sho
             <th className="p-2 text-left">Culture</th>
             <th className="p-2 text-left">Superficie (ha)</th>
             <th className="p-2 text-left">Eau utilisée (m³)</th>
-            <th className="p-2 text-left">Profit (€)</th>
+            <th className="p-2 text-left">Profit (DH)</th>
           </tr>
         </thead>
         <tbody>
@@ -28,7 +28,7 @@ export const PlotTable: React.FC<PlotTableProps> = ({ plots, optimizedPlots, sho
               <td className="p-2">{plot.cropType}</td>
               <td className="p-2">{plot.area.toFixed(2)}</td>
               <td className="p-2">{plot.waterUsage.toLocaleString()}</td>
-              <td className="p-2">{plot.currentProfit.toLocaleString()} €</td>
+              <td className="p-2">{plot.currentProfit.toLocaleString()} DH</td>
             </tr>
           ))}
         </tbody>

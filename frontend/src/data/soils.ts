@@ -4,7 +4,7 @@ export const soils: SoilData[] = [
   {
     id: '1',
     name: 'Parcelle Nord',
-    location: 'Fès-Meknès',
+    location: 'Tanger-Tétouan-Al Hoceima',
     data: {
       nitrogen: 45,
       phosphorus: 30,
@@ -27,7 +27,7 @@ export const soils: SoilData[] = [
   {
     id: '2',
     name: 'Parcelle Sud',
-    location: 'Fès-Meknès',
+    location: 'Tanger-Tétouan-Al Hoceima',
     data: {
       nitrogen: 35,
       phosphorus: 28,

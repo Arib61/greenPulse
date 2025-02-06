@@ -38,7 +38,7 @@ export const OptimizationResults: React.FC<OptimizationResultsProps> = ({
           currentValue={currentTotalProfit}
           optimizedValue={optimizationResult?.totalProfit}
           showOptimized={showOptimized}
-          format={(value) => `${value.toLocaleString()} €`}
+          format={(value) => `${value.toLocaleString()} DH`}
         />
         <ResultCard
           icon={<Droplets className="w-5 h-5 text-blue-600" />}

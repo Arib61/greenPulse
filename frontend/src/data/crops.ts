@@ -34,7 +34,7 @@ export const soils: SoilCropData[] = [
         name: "Parcelle Nord",
         area: 5000,
         coordinates: { latitude: 34.0479, longitude: -5.0033 },
-        location: "Fès-Meknès",
+        location: "Tanger-Tétouan-Al Hoceima",
         ph: 6.8,
         moisture: 65,
         nutrients: {
