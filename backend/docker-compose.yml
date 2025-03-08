@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  ecocrops-db:
+    image: postgres:latest
+    container_name: ecocrops-db
+    environment:
+      POSTGRES_DB: ecrocropsdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+    ports:
+      - "5432:5432"
+    networks:
+      - ecocrops-network
+
+  ecocrops-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ecocrops-backend
+    depends_on:
+      - ecocrops-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://ecocrops-db:5432/ecrocropsdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 123
+    ports:
+      - "8080:8080"
+    networks:
+      - ecocrops-network
+
+networks:
+  ecocrops-network:
+    driver: bridge
