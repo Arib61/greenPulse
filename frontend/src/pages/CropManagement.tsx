@@ -187,7 +187,7 @@ export function CropManagement() {
                     className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
                 >
                     <Plus className="w-5 h-5" />
-                    Ajouter une Sole
+                    Ajouter un Sol
                 </button>
           </div>
         </div>
@@ -195,13 +195,13 @@ export function CropManagement() {
         {/* Liste déroulante des soles */}
         {selectedView === "soil" && (
           <div className="bg-white p-6 rounded-lg shadow-sm">
-            <h2 className="text-xl font-semibold mb-4">Sélectionnez une Sole</h2>
+            <h2 className="text-xl font-semibold mb-4">Sélectionnez un Sol</h2>
             <select
               onChange={(e) => handleSelectSole(Number(e.target.value))}
               value={selectedSoleId || ""}
               className="block w-full p-2 border rounded-md"
             >
-              <option value="">-- Choisissez une sole --</option>
+              <option value="">-- Choisissez un sol --</option>
               {soles.map((sole) => (
                 <option key={sole.id} value={sole.id}>
                   Sole {sole.id} - {sole.localisation} ({sole.superficie} m²)
@@ -229,7 +229,7 @@ export function CropManagement() {
 
 
         ) : (
-          <p className="text-gray-500 text-center">Sélectionnez une sole.</p>
+          <p className="text-gray-500 text-center">Sélectionnez un sol.</p>
         )
       ) : (
         <CropList crops={crops} soils={soles} />

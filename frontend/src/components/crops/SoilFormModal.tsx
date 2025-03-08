@@ -67,7 +67,7 @@ export function SoilFormModal({ show, onClose, setMessage }: SoilFormModalProps)
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-xl font-bold mb-4">Ajouter une Sole</h2>
+        <h2 className="text-xl font-bold mb-4">Ajouter un Sol</h2>
 
         <input
           type="number"

@@ -1,0 +1,72 @@
+{
+    "info": {
+      "name": "Ecocrops API Collection",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "AuthController",
+        "item": [
+          {
+            "name": "Login",
+            "request": {
+              "method": "POST",
+              "header": [{"key": "Content-Type", "value": "application/json"}],
+              "body": {"mode": "raw", "raw": "{\"email\": \"test@example.com\", \"motDePasse\": \"password\"}"},
+              "url": {"raw": "http://localhost:8080/api/auth/login"}
+            }
+          }
+        ]
+      },
+      {
+        "name": "CalendrierController",
+        "item": [
+          {"name": "Get All Calendriers", "request": {"method": "GET", "url": "http://localhost:8080/api/calendrier"}},
+          {"name": "Get Calendrier by ID", "request": {"method": "GET", "url": "http://localhost:8080/api/calendrier/1"}}
+        ]
+      },
+      {
+        "name": "ChatController",
+        "item": [
+          {"name": "Chat with Bot", "request": {"method": "POST", "url": "http://localhost:8080/api/chat", "body": {"mode": "raw", "raw": "{\"message\":\"Bonjour\"}"}}}
+        ]
+      },
+      {
+        "name": "CulturePersonnaliseController",
+        "item": [
+          {"name": "Get Cultures Personnalisées", "request": {"method": "GET", "url": "http://localhost:8080/api/culture-personnalise/:userId"}}
+        ]
+      },
+      {
+        "name": "ParametresChimiqueController",
+        "item": [
+          {"name": "Get All Parametres Chimiques", "request": {"method": "GET", "url": "http://localhost:8080/api/parametres-chimiques"}}
+        ]
+      },
+      {
+        "name": "ParametresClimatiqueController",
+        "item": [
+          {"name": "Get All Parametres Climatiques", "request": {"method": "GET", "url": "http://localhost:8080/api/parametres-climatiques"}}
+        ]
+      },
+      {
+        "name": "RecommandationController",
+        "item": [
+          {"name": "Get Recommendations by User", "request": {"method": "GET", "url": "http://localhost:8080/api/recommendations/:userId"}}
+        ]
+      },
+      {
+        "name": "SoleController",
+        "item": [
+          {"name": "Get All Soles", "request": {"method": "GET", "url": "http://localhost:8080/api/sole"}}
+        ]
+      },
+      {
+        "name": "UtilisateurController",
+        "item": [
+          {"name": "Get All Utilisateurs", "request": {"method": "GET", "url": "http://localhost:8080/api/utilisateurs"}}
+        ]
+      }
+    ]
+  }
+  

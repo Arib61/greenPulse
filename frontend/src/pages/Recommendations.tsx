@@ -139,7 +139,7 @@ export function Recommendations() {
                 value={selectedSoleId || ""}
                 className="w-full p-2 border rounded-md"
               >
-                <option value="">-- Choisissez une sole --</option>
+                <option value="">-- Choisissez un sol --</option>
                 {soles.map((sole) => (
                   <option key={sole.id} value={sole.id}>
                     {sole.localisation} ({sole.superficie}m²)
