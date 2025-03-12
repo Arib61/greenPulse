@@ -3,17 +3,17 @@ package greenpulse.ecocrops.ecocrops.controllers;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import jakarta.annotation.PreDestroy;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/api/chat")
@@ -21,6 +21,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Chatbot AI", description = "API permettant de communiquer avec un chatbot alimenté par un modèle IA externe")
 public class ChatController {
 
+    private static final Logger logger = LoggerFactory.getLogger(ChatController.class);
     private Process pythonProcess;
     private BufferedWriter pythonWriter;
     private BufferedReader pythonReader;
@@ -30,18 +31,24 @@ public class ChatController {
         try {
             startPythonProcess();
         } catch (IOException e) {
+            logger.error("Impossible de démarrer le processus Python", e);
             throw new RuntimeException("Impossible de démarrer le processus Python", e);
         }
     }
 
-    private void startPythonProcess() throws IOException {
-        String pythonScriptPath =  "src/main/java/greenpulse/ecocrops/ecocrops/python/chat.py"; 
-        ProcessBuilder processBuilder = new ProcessBuilder("python", pythonScriptPath);
+    private synchronized void startPythonProcess() throws IOException {
+        logger.info("Démarrage du script Python...");
+
+        String pythonScriptPath_local = "backend/src/main/java/greenpulse/ecocrops/ecocrops/python/chat.py";
+        String pythonScriptPath_docker = "/app/chat_bot.py";
+        ProcessBuilder processBuilder = new ProcessBuilder("python", pythonScriptPath_docker);
         processBuilder.redirectErrorStream(true);
         pythonProcess = processBuilder.start();
 
         pythonWriter = new BufferedWriter(new OutputStreamWriter(pythonProcess.getOutputStream()));
         pythonReader = new BufferedReader(new InputStreamReader(pythonProcess.getInputStream()));
+
+        logger.info("Processus Python démarré avec succès.");
     }
 
     @Operation(
@@ -64,33 +71,48 @@ public class ChatController {
         try {
             // Vérifier si le processus Python est actif, sinon le redémarrer
             if (pythonProcess == null || !pythonProcess.isAlive()) {
+                logger.warn("Le processus Python est inactif, redémarrage...");
                 startPythonProcess();
             }
 
             // Envoyer la requête à Python
-            pythonWriter.write(userInput + "\n");
-            pythonWriter.flush();
+            synchronized (this) {
+                logger.info("Envoi du message à Python : {}", userInput);
+                pythonWriter.write(userInput);
+                pythonWriter.newLine();
+                pythonWriter.flush();
+            }
 
             // Lire la réponse JSON
-            String output = pythonReader.readLine();
-            if (output != null) {
-                // Convertir la réponse en JSON
-                Map<String, String> jsonResponse = objectMapper.readValue(output, Map.class);
-                
-                // Vérifier si une erreur est retournée par Python
-                if (jsonResponse.containsKey("error")) {
-                    return ResponseEntity.status(500).body(jsonResponse);
+            StringBuilder responseBuilder = new StringBuilder();
+            String line;
+            while ((line = pythonReader.readLine()) != null) {
+                logger.debug("Python a répondu : {}", line);
+                responseBuilder.append(line);
+                if (line.endsWith("}")) {
+                    break;
                 }
-
-                return ResponseEntity.ok(jsonResponse);
-            } else {
-                response.put("error", "Aucune réponse du bot.");
             }
-        } catch (IOException e) {
-            response.put("error", "Erreur de communication avec le script Python : " + e.getMessage());
-        }
 
-        return ResponseEntity.ok(response);
+            String output = responseBuilder.toString();
+            logger.info("Réponse complète de Python : {}", output);
+
+            if (output.contains("error")) {
+                response.put("error", "Erreur reçue de Python : " + output);
+                return ResponseEntity.status(500).body(response);
+            }
+
+            logger.info("Réponse brute de Python : {}", output);
+
+            // Convertir en JSON et renvoyer la réponse
+            Map<String, String> jsonResponse = objectMapper.readValue(output, Map.class);
+            return ResponseEntity.ok(jsonResponse);
+
+        } catch (IOException e) {
+            logger.error("Erreur de communication avec le script Python", e);
+            response.put("error", "Erreur de communication avec le script Python : " + e.getMessage());
+            return ResponseEntity.status(500).body(response);
+        }
     }
 
     @Operation(
@@ -101,6 +123,7 @@ public class ChatController {
     @PreDestroy
     public void cleanup() {
         if (pythonProcess != null) {
+            logger.info("Arrêt du processus Python...");
             pythonProcess.destroy();
         }
     }
