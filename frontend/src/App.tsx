@@ -11,6 +11,7 @@ import { Directives } from './pages/Directives';
 import { Alerts } from './pages/Alerts';
 import { Settings } from './pages/Settings';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { ChatBot } from "./components/ChatBot/ChatBot";
 import './styles/rtl.css';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
@@ -92,6 +93,7 @@ export default function App() {
               }
             />
           </Routes>
+          <ChatBot />
         </BrowserRouter>
       </AuthProvider>
     </div>

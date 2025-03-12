@@ -15,7 +15,7 @@ services:
 
   ecocrops-backend:
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
     container_name: ecocrops-backend
     depends_on:
@@ -29,7 +29,22 @@ services:
     networks:
       - ecocrops-network
     volumes:
-      - ./src/main/java/greenpulse/ecocrops/ecocrops/python:/app/src/main/java/greenpulse/ecocrops/ecocrops/python
+      - ./backend/src/main/java/greenpulse/ecocrops/ecocrops/python:/app/src/main/java/greenpulse/ecocrops/ecocrops/python
+
+  ecocrops-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ecocrops-frontend
+    ports:
+      - "5173:5173"
+    networks:
+      - ecocrops-network
+    volumes:
+      - ./frontend:/app  # Permet d'éditer le code sans reconstruire l’image
+      - /app/node_modules # Ignore node_modules (sinon conflit avec le conteneur)
+    environment:
+      - CHOKIDAR_USEPOLLING=true # Fixe un bug potentiel avec Vite et Docker
 
 networks:
   ecocrops-network:

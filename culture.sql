@@ -27,3 +27,6 @@ INSERT INTO culture (id, besoin_eau, cout, nom, rendement_annuel, temps, type_cu
 (26, '600 à 1250 mm', '8500 à 11000 MAD/ha', 'poivre', '20 à 25 tonnes/ha', '120 à 150 jours', 'épice'),
 (27, '400 à 600 mm', '5000 à 6500 MAD/ha', 'pastèque', '25 à 35 tonnes/ha', '80 à 110 jours', 'fruit'),
 (28, '1000 à 1500 mm', '12000 à 16000 MAD/arbre', 'avocatier', '10 à 15 tonnes/ha', '180 à 540 jours', 'fruit');
+
+docker exec -it ecocrops-db psql -U postgres -d ecrocropsdb
+UPDATE culture SET type = type_culture;

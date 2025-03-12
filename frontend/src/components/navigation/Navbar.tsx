@@ -63,7 +63,7 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           {/* Logo */}
           <img
-            src="https://projetxml-production.up.railway.app/static/images/ecoCrops_logo__1___1_-removebg-preview.png" // Replace with your logo path
+            src="../images/ecoCrops_logo.png" 
             alt="Ecocrops Logo"
             className="w-12 h-12" // Adjust size as needed
           />
