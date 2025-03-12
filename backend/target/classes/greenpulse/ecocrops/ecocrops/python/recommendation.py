@@ -7,7 +7,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # Charger le modèle et le scaler depuis le fichier
-with open("src\\main\\java\\greenpulse\\ecocrops\\ecocrops\\python\\model_and_scaler.pkl", "rb") as file:
+with open("/app/src/main/java/greenpulse/ecocrops/ecocrops/python/model_and_scaler.pkl", "rb") as file:
     data = pickle.load(file)
     model = data["model"]
     scaler = data["scaler"]

@@ -14,11 +14,12 @@ public class PythonRecommendationService2 {
         try {
             // Chemin du script Python
             String pythonScriptPath = "src\\main\\java\\greenpulse\\ecocrops\\ecocrops\\python\\get_parameters.py";
+            String pythonScriptPath_docker = "/app/src/main/java/greenpulse/ecocrops/ecocrops/python/get_parameters.py"; 
             String pythonExecutable = "python"; // Python par défaut
             
             // Construire la commande
             String[] command = new String[]{
-                pythonExecutable, pythonScriptPath,
+                pythonExecutable, pythonScriptPath_docker,
                 String.valueOf(latitude),
                 String.valueOf(longitude)
             };

@@ -38,8 +38,9 @@ public class SecurityConfiguration {
                     "/webjars/**"
                 ).permitAll() // ✅ Swagger accessible sans token
                 .requestMatchers("/api/auth/login").permitAll()
-                .requestMatchers("/api/auth/login").permitAll()
+                .requestMatchers("/api/utilisateurs").permitAll()
                 .requestMatchers("/api/chat").permitAll()
+
                 .requestMatchers("/api/soles/**").hasAuthority("agriculteur")
                 .anyRequest().authenticated()
             )

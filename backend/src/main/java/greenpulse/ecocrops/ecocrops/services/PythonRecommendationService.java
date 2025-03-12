@@ -15,9 +15,10 @@ public class PythonRecommendationService {
         try {
             // Construire la commande pour exécuter le script Python
             String pythonScriptPath = "src\\main\\java\\greenpulse\\ecocrops\\ecocrops\\python\\recommendation.py";
+            String pythonScriptPath_docker = "/app/src/main/java/greenpulse/ecocrops/ecocrops/python/recommendation.py"; 
             String pythonExecutable = "python"; // Utiliser "python" car c'est votre Python par défaut
             String[] command = new String[]{
-                pythonExecutable, pythonScriptPath,
+                pythonExecutable, pythonScriptPath_docker,
                 String.valueOf(inputData[0]),
                 String.valueOf(inputData[1]),
                 String.valueOf(inputData[2]),

@@ -28,6 +28,8 @@ services:
       - "8080:8080"
     networks:
       - ecocrops-network
+    volumes:
+      - ./src/main/java/greenpulse/ecocrops/ecocrops/python:/app/src/main/java/greenpulse/ecocrops/ecocrops/python
 
 networks:
   ecocrops-network:

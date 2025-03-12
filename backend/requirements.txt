@@ -5,3 +5,4 @@ pickle-mixin
 python-dotenv
 google-generativeai
 absl-py
+scikit-learn
