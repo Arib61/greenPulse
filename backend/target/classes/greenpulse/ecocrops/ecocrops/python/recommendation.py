@@ -46,13 +46,23 @@ def recommend(input_data):
         'Mais': 17,
         'Oignon': 18,
         'pommes_de_terre': 19,
-        'avocatier': 20
+        'Avocatier': 20
     }
+
+    # Création d'un dictionnaire inverse pour accéder aux noms à partir des indices
     crop_dict_reversed = {v - 1: k for k, v in crop_dict.items()}
-    top_3_crops = [(crop_dict_reversed.get(idx, "Unknown Crop"), probabilities[idx]) for idx in top_3_indices]
     
+    # Générer les résultats des 3 meilleurs choix avec leurs probabilités
+    top_3_crops = [
+        {
+            "crop": crop_dict_reversed.get(idx, "Unknown Crop"),
+            "probability": float(probabilities[idx])
+        }
+        for idx in top_3_indices
+    ]
+
     # Étape 6 : Retourner le résultat
-    return {"best_crop": top_3_crops[0][0], "top_3": top_3_crops}
+    return {"top_3": top_3_crops}
 
 if __name__ == "__main__":
     # Vérifier si des arguments sont passés
@@ -67,4 +77,4 @@ if __name__ == "__main__":
     result = recommend(input_data)
 
     # Imprimer les résultats au format JSON
-    print(json.dumps(result))
+    print(json.dumps(result, indent=2))

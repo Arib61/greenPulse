@@ -97,6 +97,8 @@ public class RecommandationService {
         };
 
         Map<String, Object> recommendationOutput = pythonRecommendationService.getRecommendation(inputData);
+        System.out.println("🔍 JSON retourné par Python : " + recommendationOutput);
+
 
         // On suppose que recommendation.py renvoie un JSON du style :
         // {
@@ -108,32 +110,31 @@ public class RecommandationService {
         // }
         // => On récupère la clé "top_3"
         @SuppressWarnings("unchecked")
-        List<List<Object>> top3 = (List<List<Object>>) recommendationOutput.get("top_3");
-        if (top3 == null || top3.isEmpty()) {
-            System.out.println("❌ Aucune culture recommandée renvoyée par le script Python.");
-            // On peut retourner la recommandation vide (sans cultures)
-            return getRecommandationWithDetails(recommandation.getId());
+        Object top3Raw = recommendationOutput.get("top_3");
+        List<Map<String, Object>> top3;
+
+        if (top3Raw instanceof List) {
+            top3 = (List<Map<String, Object>>) top3Raw;
+        } else {
+            throw new IllegalArgumentException("Format de réponse incorrect pour top_3 : " + top3Raw);
         }
+
 
         // Étape D) Alimenter la table culture_recommandation
         LocalDateTime now = LocalDateTime.now();
         for (int i = 0; i < top3.size(); i++) {
-            List<Object> cultureData = top3.get(i);
-            if (cultureData.size() < 2) {
-                continue; // Donnée incomplète
-            }
-            String cultureName = cultureData.get(0).toString();
-            Double probability = parseToDouble(cultureData.get(1));
-
-            // Chercher la/les culture(s) dont le nom contient (ou égale) cultureName
-            // => ou bien si vous avez un champ "nom" exact, utilisez findByNom(cultureName)
+            Map<String, Object> cultureData = top3.get(i);
+            
+            String cultureName = cultureData.get("crop").toString();
+            Double probability = parseToDouble(cultureData.get("probability"));
+        
             List<Culture> relatedCultures = cultureRepository.findByNomContaining(cultureName);
             if (relatedCultures.isEmpty()) {
                 System.out.println("❌ Aucune culture trouvée en base pour : " + cultureName);
                 continue;
             }
-
-            // Insérer chaque culture correspondante
+        
+            
             for (Culture culture : relatedCultures) {
                 CultureRecommandation cr = new CultureRecommandation();
                 cr.setRecommandation(recommandation);
@@ -141,10 +142,11 @@ public class RecommandationService {
                 cr.setProbabilite(probability != null ? probability : 0.0);
                 cr.setOrdre(i + 1);
                 cr.setDateAssociation(now);
-
+        
                 cultureRecommandationRepository.save(cr);
             }
         }
+        
 
         // Étape E) Retourner la recommandation avec les détails de cultures
         return getRecommandationWithDetails(recommandation.getId());

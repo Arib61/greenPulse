@@ -54,6 +54,7 @@ export function SoilFormModal({ show, onClose, setMessage }: SoilFormModalProps)
       setMessage("✅ Sole créée avec succès !");
       setSuperficie("");
       setLocalisation("");
+      
       setTimeout(() => {
         onClose(); // Ferme la modal après un court délai
       }, 1500);

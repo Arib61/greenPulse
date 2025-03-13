@@ -10,29 +10,38 @@ export function Settings() {
     currentPassword: '',
     newPassword: ''
   });
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  
+
   // États pour les préférences
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [smsAlerts, setSmsAlerts] = useState(false);
   const [language, setLanguage] = useState('Français');
 
-  // Chargement des données utilisateur
+  // ✅ Récupérer l'ID de l'utilisateur connecté depuis localStorage ou un état global
+  const userId = localStorage.getItem('userId'); // Assurez-vous que cet ID est stocké lors de l'authentification
+
   useEffect(() => {
+    if (!userId) {
+      setError('Utilisateur non authentifié');
+      setLoading(false);
+      return;
+    }
+
     const fetchUserData = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/utilisateurs/1');
+        const response = await fetch(`http://localhost:8080/api/utilisateurs/${userId}`);
         if (!response.ok) throw new Error('Erreur de chargement des données');
         
         const data = await response.json();
-        setUserData({
-          ...userData,
+        setUserData((prev) => ({
+          ...prev,
           prenom: data.prenom,
           nom: data.nom,
           email: data.email
-        });
+        }));
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Erreur inconnue');
       } finally {
@@ -41,16 +50,62 @@ export function Settings() {
     };
 
     fetchUserData();
-  }, []);
+  }, [userId]);
 
-  // Soumission du formulaire
+  const updatePassword = async () => {
+    setError('');
+    setSuccess('');
+  
+    if (!userId) {
+      setError('Utilisateur non authentifié');
+      return;
+    }
+  
+    if (!userData.currentPassword || !userData.newPassword) {
+      setError('Veuillez remplir tous les champs de mot de passe.');
+      return;
+    }
+  
+    try {
+      const response = await fetch(`http://localhost:8080/api/utilisateurs/${userId}/update-password`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ancienMotDePasse: userData.currentPassword,
+          nouveauMotDePasse: userData.newPassword,
+        }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Échec de la mise à jour du mot de passe');
+      }
+  
+      setSuccess('Mot de passe mis à jour avec succès');
+      setUserData((prev) => ({
+        ...prev,
+        currentPassword: '',
+        newPassword: '',
+      }));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erreur lors de la mise à jour');
+    }
+  };
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setSuccess('');
 
+    if (!userId) {
+      setError('Utilisateur non authentifié');
+      return;
+    }
+
     try {
-      const response = await fetch('http://localhost:8080/api/utilisateurs/1', {
+      const response = await fetch(`http://localhost:8080/api/utilisateurs/${userId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -80,7 +135,7 @@ export function Settings() {
   return (
     <DashboardLayout>
       <h1 className="text-2xl font-bold mb-6">Paramètres</h1>
-      
+
       {error && <div className="bg-red-100 text-red-700 p-4 mb-4 rounded">{error}</div>}
       {success && <div className="bg-green-100 text-green-700 p-4 mb-4 rounded">{success}</div>}
 
@@ -147,8 +202,16 @@ export function Settings() {
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
               />
             </div>
+            <button
+              type="button"
+              onClick={updatePassword}
+              className="mt-2 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+            >
+              Modifier le mot de passe
+            </button>
           </div>
         </div>
+
 
         {/* Autres paramètres */}
         <div className="bg-white p-6 rounded-lg shadow-sm">
@@ -163,15 +226,6 @@ export function Settings() {
                 type="checkbox" 
                 checked={emailNotifications}
                 onChange={(e) => setEmailNotifications(e.target.checked)}
-                className="rounded text-green-600"
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <span>Alertes SMS</span>
-              <input 
-                type="checkbox" 
-                checked={smsAlerts}
-                onChange={(e) => setSmsAlerts(e.target.checked)}
                 className="rounded text-green-600"
               />
             </div>

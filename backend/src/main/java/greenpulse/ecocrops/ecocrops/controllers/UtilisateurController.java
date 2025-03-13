@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import greenpulse.ecocrops.ecocrops.exception.RessourceNotFoundException;
+import greenpulse.ecocrops.ecocrops.DTO.UpdatePasswordRequest;
 import greenpulse.ecocrops.ecocrops.DTO.UtilisateurRequestDTO;
 
 import lombok.AllArgsConstructor;
@@ -103,4 +104,23 @@ public class UtilisateurController {
         }
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(
+            summary = "Mettre à jour le mot de passe d'un utilisateur",
+            description = "Mettre à jour le mot de passe d'un utilisateur enregistré dans la base de données via son ID."
+    )
+    @ApiResponse(responseCode = "200", description = "Mot de passe mis à jour avec succès.")
+    @ApiResponse(responseCode = "400", description = "Les champs obligatoires sont obligatoires.")
+    @ApiResponse(responseCode = "404", description = "Utilisateur non rencontré.")
+    @ApiResponse(responseCode = "500", description = "Erreur interne du serveur.")
+    @PutMapping("/{userId}/update-password")
+    public ResponseEntity<String> updatePassword(
+            @PathVariable Integer userId,
+            @RequestBody UpdatePasswordRequest request,
+            @RequestHeader("Authorization") String token) {
+
+        utilisateurService.updatePassword(userId, request.getAncienMotDePasse(), request.getNouveauMotDePasse());
+        return ResponseEntity.ok("Mot de passe mis à jour avec succès");
+    }
+
 }

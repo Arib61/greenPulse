@@ -133,14 +133,28 @@ public class UtilisateurService {
     String token = JwtUtil.generateToken(utilisateur.getEmail(), utilisateur.getTypeUtilisateur().toString());
 
     // Retourner les détails de connexion
-    return new LoginResponseDTO(
-            utilisateur.getId(),
-            utilisateur.getEmail(),
-            utilisateur.getPrenom(),
-            utilisateur.getNom(),
-            utilisateur.getTypeUtilisateur(),
-            token
-    );
-}
+        return new LoginResponseDTO(
+                utilisateur.getId(),
+                utilisateur.getEmail(),
+                utilisateur.getPrenom(),
+                utilisateur.getNom(),
+                utilisateur.getTypeUtilisateur(),
+                token
+        );
+    }
+
+    public void updatePassword(Integer userId, String ancienMotDePasse, String nouveauMotDePasse) {
+        Utilisateur utilisateur = utilisateurRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+
+        // Vérifier si l'ancien mot de passe est correct
+        if (!passwordEncoder.matches(ancienMotDePasse, utilisateur.getMotDePasse())) {
+            throw new RuntimeException("Ancien mot de passe incorrect");
+        }
+
+        // Hasher et mettre à jour le nouveau mot de passe
+        utilisateur.setMotDePasse(passwordEncoder.encode(nouveauMotDePasse));
+        utilisateurRepository.save(utilisateur);
+    }
 
 }

@@ -67,6 +67,6 @@ public class JwtFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
         // Routes à ignorer par le filtre
-        return path.startsWith("/api/auth/login") || path.startsWith("/api/utilisateurs") || path.startsWith("/api/chat") ;
+        return path.startsWith("/api/auth/login") || path.startsWith("/api/utilisateurs") || path.startsWith("/api/chat")  || path.startsWith("/api/utilisateurs/**");
     }
 }

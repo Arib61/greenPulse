@@ -63,25 +63,40 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
         body: JSON.stringify({ message: content }),
       });
 
-      if (!response.ok) throw new Error("Failed to fetch bot response");
+      if (!response.ok) throw new Error(`Failed to fetch bot response: ${response.status}`);
 
-      const data = await response.json();
-      const botResponseContent = JSON.parse(data.botResponse).response;
+      // 🔍 Log de la réponse brute pour le debug
+      const responseText = await response.text();
+      console.log("Raw response from server:", responseText);
 
-      simulateTyping(botResponseContent);
+      let data;
+      try {
+        data = JSON.parse(responseText); // ✅ Vérifier si c'est un JSON valide
+      } catch (error) {
+        throw new Error("JSON parsing error: Invalid JSON received");
+      }
+
+      if (!data.response) {
+        throw new Error("API response format incorrect, missing 'response' field");
+      }
+
+      simulateTyping(data.response);
     } catch (error) {
       console.error("Error fetching bot response:", error);
-      const errorMessage: Message = {
-        id: crypto.randomUUID(),
-        content: "Oops! Something went wrong. Please try again later.",
-        sender: "bot",
-        timestamp: new Date(),
-      };
-      setLocalMessages((prev) => [...prev, errorMessage]);
+      setLocalMessages((prev) => [
+        ...prev,
+        {
+          id: crypto.randomUUID(),
+          content: "Oops! Something went wrong. Please try again later.",
+          sender: "bot",
+          timestamp: new Date(),
+        },
+      ]);
     } finally {
       scrollToBottom();
     }
-  };
+};
+
 
   const simulateTyping = (fullText: string) => {
     let index = 0;
