@@ -40,7 +40,6 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/auth/login").permitAll()
                 .requestMatchers("/api/utilisateurs").permitAll()
                 .requestMatchers("/api/utilisateurs/**").permitAll()
-                .requestMatchers("/api/utilisateurs/**/update-password").permitAll()
                 .requestMatchers("/api/chat").permitAll()
 
                 .requestMatchers("/api/soles/**").hasAuthority("agriculteur")
